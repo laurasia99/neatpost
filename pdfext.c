@@ -178,8 +178,8 @@ static void *my_memrchr(void *m, int c, long n)
 {
 	int i;
 	for (i = 0; i < n; i++)
-		if (*(unsigned char *) (m + n - 1 - i) == c)
-			return m + n - 1 - i;
+		if (*(unsigned char *) ((char*)m + n - 1 - i) == c)
+			return (char*)m + n - 1 - i;
 	return NULL;
 }
 

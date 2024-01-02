@@ -1,0 +1,63 @@
+!IFNDEF _NMAKE_POST_INCLUDED
+_NMAKE_POST_INCLUDED=1
+
+# Two executables can be built:
+#   pdf.exe     intermediate step to generating a PDF file
+#               with PDF 'special features'
+#   post.exe    Generate a postscript; no support for PDF's
+#
+# *** By default, only pdf.exe is built
+
+!IFNDEF O
+O=obj
+!ENDIF
+!IFNDEF S
+S=.
+!ENDIF
+
+# FDIR = default installation directory
+!IFNDEF FDIR
+FDIR = .
+!MESSAGE Default installation directory set to $(FDIR)
+!MESSAGE [Change from default to suit your installation]
+!ENDIF
+
+CC = cl
+CFLAGS = /nologo /O2 "-DTROFFFDIR=\"$(FDIR)\""
+LDFLAGS = /nologo
+OBJS = $O\post.obj $O\ps.obj $O\font.obj $O\dev.obj $O\clr.obj $O\dict.obj $O\iset.obj $O\sbuf.obj
+OBJSPDF = $O\post.obj $O\pdf.obj $O\pdfext.obj $O\font.obj $O\dev.obj $O\clr.obj $O\dict.obj $O\iset.obj $O\sbuf.obj
+
+all:: pdf.exe
+post.exe: $(OBJS)
+	$(CC) /Fe:$@ $(OBJS) $(LDFLAGS)
+pdf.exe: $(OBJSPDF)
+	$(CC) /Fe:$@ $(OBJS) $(LDFLAGS)
+clean::
+	-del /Q $(OBJS) $(OBJSPDF) post.exe pdf.exe
+
+#
+$O:
+    if not exist $O mkdir $O
+$O\clr.obj: $O $S\clr.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\dev.obj: $O $S\dev.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\dict.obj: $O $S\dict.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\font.obj: $O $S\font.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\iset.obj: $O $S\iset.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\pdf.obj: $O $S\pdf.c
+	$(CC) /c /Fo:$@ $(CFLAGS) /DNO_UNISTD $S/$(@B).c
+$O\pdfext.obj: $O $S\pdfext.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\post.obj: $O $S\post.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\ps.obj: $O $S\ps.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+$O\sbuf.obj: $O $S\sbuf.c
+	$(CC) /c /Fo:$@ $(CFLAGS) $S/$(@B).c
+
+!ENDIF

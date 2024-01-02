@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef NO_UNISTD
 #include <unistd.h>
+#endif
 #include "post.h"
 
 static char pdf_title[256];	/* document title */

@@ -545,7 +545,7 @@ void *mextend(void *old, long oldsz, long newsz, int memsz)
 {
 	void *new = malloc(newsz * memsz);
 	memcpy(new, old, oldsz * memsz);
-	memset(new + oldsz * memsz, 0, (newsz - oldsz) * memsz);
+	memset((char*)new + oldsz * memsz, 0, (newsz - oldsz) * memsz);
 	free(old);
 	return new;
 }
