@@ -32,7 +32,7 @@ all:: pdf.exe
 post.exe: $(OBJS)
 	$(CC) /Fe:$@ $(OBJS) $(LDFLAGS)
 pdf.exe: $(OBJSPDF)
-	$(CC) /Fe:$@ $(OBJS) $(LDFLAGS)
+	$(CC) /Fe:$@ $(OBJSPDF) $(LDFLAGS)
 clean::
 	-del /Q $(OBJS) $(OBJSPDF) post.exe pdf.exe
 
